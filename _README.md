@@ -12,7 +12,7 @@ sub scripts inside the plugin is listed below with description and instructions 
 
 
 * test
- * test
+  * test
 > test
 # test
 ## test
