@@ -9,5 +9,6 @@ sub scripts inside the plugin is listed below with description and instructions 
 * wa_ChatMode
 * wa_KillMode
 * wa_NameGenerator
+    > info soon
 * wa_ChangeName
 
