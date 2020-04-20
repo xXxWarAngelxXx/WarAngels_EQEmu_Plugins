@@ -7,3 +7,13 @@ sub scripts inside the plugin is listed below with description and instructions 
 
 * wa_KillMode
 * wa_NameGenerator
+
+
+
+
+* test
+ * test
+> test
+# test
+## test
+! test
