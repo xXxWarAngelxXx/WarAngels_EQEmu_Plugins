@@ -17,6 +17,6 @@ sub scripts inside the plugin is listed below with description and instructions 
     > In that code in the [ ] there are three "areas" called arrays. Divided by the "," with elements inside (Mith Mar Murn...) In this case you have the first array with the first syllable of a name... "Mith". The second array with a second syllable of "ol". And the third with "as" for a name of Mitholas. Now breaking a name down gives a random generated name in game! Again could have Mitholas or Mithelere or Murneacha...
 * wa_ChangeName
     > Changes the NPCs name after recieving it from the wa_NameGenerator.
-* wa_RandomGender
+* wa_RandomGender (coming soon)
     > Just as it says 50/50 chance of being a guy or a girl.
 
