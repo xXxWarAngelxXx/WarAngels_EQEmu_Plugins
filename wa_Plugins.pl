@@ -2,7 +2,7 @@
 ##############################################################################
 #:: Usage:			Single compilation of plugins from WarAngel
 #:: Created:		22April2020
-#:: Version:		wa_200422_01
+#:: Version:		wa_200422_02
 #:: Author:			WarAngel
 #:: Description:	To provide and support WarAngel's scripts (quests, etc...)
 ##############################################################################
@@ -138,7 +138,7 @@ sub wa_KillMode
 ######################################################
 #:: Usage:			plugin::wa_NameGenerator();
 #:: Created:		19April2020
-#:: Version:		wa_200419_01
+#:: Version:		wa_200422_01
 #:: Author:			Dencelle, made for WarAngel
 #:: Description:	To generate a random elements of names for npcs.
 #:: With help from:	
@@ -162,7 +162,7 @@ sub wa_NameGenerator
         1 => [0,'','',''],
         2 => [0,'','',''], 
         3 => [0,'','',''],
-        4 => [1,'Mith Mar Murn Menth Mic','ol ea el','as ere cha'],
+        4 => [1,'Mith Mar Murn Menth Mic Birch Oil Deer Com Blue Hon Kee Haw Mi Fil Fin Che Loe Boul Ain Elm Ber Pop Lleu Wa Ash Vis Spruce Pine Ad Mad Cea Filbert Uin Blue Maple','ol ea el na o hg thorn bert ma eur der dre hol lnut Es nnai shade rock guy scrub ie cal','as ere cha nin tive ill live hall wood ey per hollow ach an gaire ker in mire win vale lar fer go ant low ras wing dis rone deach ann olive'],
         5 => [0,'','',''],
         6 => [0,'','',''],
         7 => [1,'Mith Mar Murn Menth','ol ea el','as ere cha'],
@@ -181,7 +181,7 @@ sub wa_NameGenerator
         1 => [0,'','',''],
         2 => [0,'','',''],
         3 => [0,'','',''],
-        4 => [1,'Fen Fil Fith','an ea al','a ish cha'],
+        4 => [1,'Fen Fil Fith Ig Gw Cao My Blo Cry Bry Fan Du Blod Pial Lin Eir Ba Lama Se Sy Jar Ket Mai Fer','ea al ern ene im fa deu st nn ial owa euw an w ilfh ela lea lih aeth hes ar ath','ish cha Ira he nwy wedd ch rm yn h ill a et en inn la sh th ar as ah ti uil il'],
         5 => [0,'','',''],
         6 => [0,'','',''],
         7 => [1,'Fen Fil Fith','an ea al','a ish cha'],
