@@ -1,7 +1,7 @@
 ##############################################################################
 ##############################################################################
 #:: Usage:			Single compilation of plugins from WarAngel
-#:: Created:		22April2020
+#:: Created:		10 May 2020
 #:: Version:		wa_200422_02
 #:: Author:			WarAngel
 #:: Description:	To provide and support WarAngel's scripts (quests, etc...)
@@ -151,6 +151,8 @@ sub wa_KillMode
 #::					Divided by the "," with elements inside (Mith Mar Murn...) In this case you have the first array with
 #::					the first syllable of a name... "Mith". The second array with a second syllable of "ol". And the third with "as" for a name of Mitholas. 
 #::					Now breaking a name down gives a random generated name in game! Again could have Mitholas or Mithelere or Murneacha...
+#::					Race list...1-Human,2-Barbarian,3-Erudite,4-Wood Elf,5-High Elf,6-Dark Elf,7-Half Elf,8-Dwarf,9-Troll,10-Ogre,11-Halfling,12-Gnome
+#::								128-Iksar,130-Vah Shir,330-Froglok,522-Drakkin
 #######################################################
 
 sub wa_NameGenerator
@@ -160,38 +162,36 @@ sub wa_NameGenerator
 	my $npcGender = $npc->GetGender();
 	my %male = (
         1 => [0,'','',''],
-        2 => [0,'','',''], 
+        2 => [1,'Higd Muf Llod','up ris lurn','lok ard vukr _ _ _ _ _ _'], 
         3 => [0,'','',''],
-        4 => [1,'Mith Mar Murn Menth Mic Birch Oil Deer Com Blue Hon Kee Haw Mi Fil Fin Che Loe Boul Ain Elm Ber Pop Lleu Wa Ash Vis Spruce Pine Ad Mad Cea Filbert Uin Blue Maple','ol ea el na o hg thorn bert ma eur der dre hol lnut Es nnai shade rock guy scrub ie cal','as ere cha nin tive ill live hall wood ey per hollow ach an gaire ker in mire win vale lar fer go ant low ras wing dis rone deach ann olive'],
+        4 => [1,'Leg Lar Loa Luw Mith Murn Menth Mic Com Haw Boul Ain Elm Ber Ash Vis Cea Uin Gilr Bes Sae Von Ker Cyv','a e i o u ol ea na hg thorn bert ma eur der dre hol es nnai shade rock ie cal euh ad ia ith lil ni nin ehn ra l is thi ae ar par el','a e i o u as ere cha nin tive ill live hall ood ey per hollow ach an gaire ker in mire win vale lar fer go ant low ras wing dis rone deach ann olive ar st is ee ae tha ath _ _ _ _ _ _'],
         5 => [0,'','',''],
-        6 => [0,'','',''],
-        7 => [1,'Mith Mar Murn Menth','ol ea el','as ere cha'],
+        6 => [1,'Br','tiz','zk _ _ _ _ _ _'],
+        7 => [1,'Mith Mar Murn Menth','ol ea el','as ere cha _ _ _ _ _ _'],
         8 => [0,'','',''],
-        9 => [0,'','',''],
-        10 => [0,'','',''],
-        11 => [0,'','',''],
-        12 => [0,'','',''],
+        9 => [1,'Zul Gro Ug','ra th nok','jas ok nok _ _ _ _ _ _'],
+        10 => [1,'Ka Ug Me','dez nu no','ag ck crush _ _ _ _ _ _'],
+        11 => [1,'Qui Mer Nor','nam lan vi','in as _ _ _ _ _ _'],
+        12 => [1,'Vor Nes Br','zi gr ix','ver im _ _ _ _ _ _'],
         128 => [0,'','',''],
-        130 => [0,'','',''],
         130 => [0,'','',''],
         330 => [0,'','',''],
         522 => [0,'','',''],
     );
 	my %female = (
         1 => [0,'','',''],
-        2 => [0,'','',''],
+        2 => [1,'Ger Fre Ey Ein Sune','dur yv vin ar','if id dr _ _ _ _ _ _'],
         3 => [0,'','',''],
-        4 => [1,'Fen Fil Fith Ig Gw Cao My Blo Cry Bry Fan Du Blod Pial Lin Eir Ba Lama Se Sy Jar Ket Mai Fer','ea al ern ene im fa deu st nn ial owa euw an w ilfh ela lea lih aeth hes ar ath','ish cha Ira he nwy wedd ch rm yn h ill a et en inn la sh th ar as ah ti uil il'],
+        4 => [1,'Loth Lir Fen Fil Fith Gw Cao Lleu Blo Cry Bry Fan Lin Eir Lama Ket Mai Fer','ea al ern ene im fa deu st nn ial owa euw an ilf ela lea lih aeth hes ar ath','a e i o u ish cha ira he nwy wedd ch rm yn ill et en inn la sh th ar as ah ti uil il _ _ _ _ _ _'],
         5 => [0,'','',''],
-        6 => [0,'','',''],
-        7 => [1,'Fen Fil Fith','an ea al','a ish cha'],
+        6 => [1,'Hel','in','ia _ _ _ _ _ _'],
+        7 => [1,'Fen Fil Fith','an ea al','a ish sha _ _ _ _ _ _'],
         8 => [0,'','',''],
-        9 => [0,'','',''],
-        10 => [0,'','',''],
-        11 => [0,'','',''],
-        12 => [0,'','',''],
+        9 => [1,'Xu Vu Eg','kun zem nar','di bi cha _ _ _ _ _ _'],
+        10 => [1,'Ble Mi Ir','gr kur eh','uk ate _ _ _ _ _ _'],
+        11 => [1,'Eo Syl Cal','gra ti wy','ce na se _ _ _ _ _ _'],
+        12 => [1,'Bree Lor Rep','wy iz hi','se yre na _ _ _ _ _ _'],
         128 => [0,'','',''],
-        130 => [0,'','',''],
         130 => [0,'','',''],
         330 => [0,'','',''],
         522 => [0,'','',''],
@@ -210,7 +210,6 @@ sub wa_NameGenerator
         11 => [0,'','',''],
         12 => [0,'','',''],
         128 => [0,'','',''],
-        130 => [0,'','',''],
         130 => [0,'','',''],
         330 => [0,'','',''],
         522 => [0,'','',''],
