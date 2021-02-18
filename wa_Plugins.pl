@@ -11,19 +11,20 @@
 
 
 ######################################################
-#:: Usage:		plugin::wa_Decisions(); Decide whether to attack or do Non combat stuff.
-#:: Created:		12April2020
-#:: Version:		wa_200419_01
-#:: Author:		WarAngel, modified by Dencelle
-#:: Description:	To generate decisions for npcs.
-#:: With help from:	
-#:: Plugins:		plugin::val('$npc');plugin::MobHealPercentage(5);plugin::wa_KillMode(400, 1200);
-#:: 			plugin::wa_ChatMode();
+#:: Usage:					plugin::wa_Decisions(); Decide whether to attack or do Non combat stuff.
+#:: Created:				12April2020
+#:: Version(ddmmyy):		wa_160221_01
+#:: Author:					WarAngel
+#:: Description:			To generate decisions for npcs.
+#:: With help from:			Dencelle
+#:: Plugins:				plugin::val('$npc');plugin::MobHealPercentage(5);plugin::wa_KillMode(400, 1200);
+#:: 						plugin::wa_ChatMode();
 #:: Future Plans:	
 #######################################################
 
 sub wa_Decisions
 {
+	#plugin::Debug("Decision start."); # The "D" in debug HAS to be UPPER CASE.
 	my $npc = plugin::val('$npc');
 	my $wa_intChoice = int(rand(100)); #Random number 0-99
 
@@ -33,21 +34,26 @@ sub wa_Decisions
 
 	if($wa_perchp <= 20)
 	{
-		#quest::debug("" . $npc->GetName() . " I am below 20 percent, healing.");			
-		#quest::debug("Health check PERCENTAGE " . $wa_perchp . "");		
+		#plugin::Debug("Heal chosen.");
+		#plugin::Debug("" . $npc->GetName() . " I am below 20 percent, healing.");			
+		#plugin::Debug("Health check PERCENTAGE " . $wa_perchp . "");		
 		plugin::MobHealPercentage(5);
-		#quest::debug("" . $npc->GetName() . "Done healing.");
+		#plugin::Debug("" . $npc->GetName() . "Done healing.");
+
 		last; # While we are in a state of no combat and below %20 health. Do not do other choices.
 	}
 	if ($wa_intChoice <= 8) #Below or at 8
 	{
-		plugin::wa_KillMode(400, 1200);	#Change the ranges for customizing the npc_player min and max agro radius
-		#quest::debug("wa_intROLL BELOW 8 worked for ". $npc->GetName() .". Time to kill");
+		#plugin::Debug("Kill chosen.");
+		plugin::wa_KillMode();
+		#plugin::wa_KillMode(400, 1200);	#Change the ranges for customizing the npc_player min and max agro radius...keeping this to give example of what you can do with plugins.
+		#plugin::Debug("wa_intROLL BELOW 8 worked for ". $npc->GetName() .". Time to kill");
 	}
 	if ($wa_intChoice > 8) #Above 8
 	{
+		#plugin::Debug("Chat chosen.");
 		plugin::wa_ChatMode();
-		#quest::debug("wa_intROLL ABOVE 8 worked for ". $npc->GetName() .". Time for peace");
+		#plugin::Debug("wa_intROLL ABOVE 8 worked for ". $npc->GetName() .". Time for peace");
 	}
 }
 
@@ -76,48 +82,50 @@ sub wa_ChatMode
 		plugin::SetAnim("sit"); #Options (stand/sit/duck/dead/kneel)		
 		#quest::shout2("worldwide only shout"); #Does not use...relies on the datbase name
 		#quest::we(14, "World emote");
-		#quest::debug("wa_intCHAT Sarcastic chat");
+		#plugin::Debug("wa_intCHAT Sarcastic chat");
 	}
 	if ($wa_intCHAT > 33 && $wa_intCHAT <= 66) #Above between 33 66
 	{
 		plugin::SetAnim("stand"); #Options (stand/sit/duck/dead/kneel)
-		#quest::debug("wa_intCHAT Positive chat");
+		#plugin::Debug("wa_intCHAT Positive chat");
 	}
 	if ($wa_intCHAT > 66) #above 66
 	{
 		plugin::DoAnim("dance");		
 		#quest::shout("Zone shout"); #Does not use...relies on the dataase name
 		#quest::ze(14, "Zone emote");
-		#quest::debug("wa_intCHAT idiot chat");
+		#plugin::Debug("wa_intCHAT idiot chat");
 	}
 }
 
 ################################################################
-#:: Usage:		plugin::wa_KillMode([minRange], [maxRange]); Example... plugin::wa_KillRange(500, 1000);
-#:: Created:		12April2020
-#:: Version:		wa_200419_01
-#:: Author:		Akkadius or Trevius, heavily modified by WarAngel
-#:: Description:	To have a NPC create the illusion of other real world players running around. Attacking Mobs in a area range.
-#:: With help from:	TurmoilToad,Salvanna,Akkadius,Trust,Kinglykrab
-#:: Plugins:		plugin::val('$npc');plugin::RandomRange(0, 100);
-#:: Future Plans	Work on waypoint integration.
+#:: Usage:					plugin::wa_KillMode([minRange], [maxRange]); Example... plugin::wa_KillRange(500, 1000);
+#:: Created:				12April2020
+#:: Version(ddmmyy):		wa_160221_01
+#:: Author:					Akkadius or Trevius, heavily modified by WarAngel
+#:: Description:			To have a NPC create the illusion of other real world players running around. Attacking Mobs in a area range.
+#:: With help from:			TurmoilToad,Salvanna,Akkadius,Trust,Kinglykrab
+#:: Plugins:				plugin::val('$npc');plugin::RandomRange(0, 100);
+#:: Future Plans:			Work on waypoint integration.
 #################################################################
 
 sub wa_KillMode
 {
-	#quest::debug("Killmode begin for " . $npc->GetName() . ""); #Wrong place to put this as it prevents the script
+	#plugin::Debug("Killmode begin for " . $npc->GetName() . ""); #This broke my script. Why?
 	my $npc = plugin::val('$npc'); #this was what I was missing. without this the plugin was not knowing who was calling
 	my $entity_list = plugin::val('$entity_list');
-	my $wa_minRange = $_[0]; #pulled from first position in the plugin call
-	my $wa_maxRange = $_[1]; #pulled from second position in the plugin call
+	my $wa_minZone = $npc->GetEntityVariable("wa_minRange");
+	my $wa_maxZone = $npc->GetEntityVariable("wa_maxRange");
+	#my $wa_minZone = $_[0]; #pulled from first position in the plugin call...keeping this to give example of what you can do with plugins.
+	#my $wa_maxZone = $_[1]; #pulled from second position in the plugin call...keeping this to give example of what you can do with plugins.
 
-	$wa_disUpper = plugin::RandomRange($wa_minRange, $wa_maxRange);
+	$wa_disUpper = plugin::RandomRange($wa_minZone, $wa_maxZone);
 	@npc_list = $entity_list->GetNPCList();
-	#quest::debug("Killmode begin for " . $npc->GetName() . "");
+	#plugin::Debug("Killmode begin for " . $npc->GetName() . "");
 
 	foreach $npc_ent (@npc_list) 
 	{
-		#quest::debug("Killmode subscript begin for " . $npc->GetName() . ""); #This debug will repeat for each NPC in the GetNPCList()
+		#plugin::Debug("Killmode subscript begin for " . $npc->GetName() . ""); #This debug will repeat for each NPC in the GetNPCList()
 		next if $npc_ent->CalculateDistance($x, $y, $z) > $wa_disUpper; #skip mobs OVER $wa_disUpper distance, check those BELOW
 		next if $npc_ent->CalculateDistance($x, $y, $z) < $wa_minRange; #skip mobs BELOW $wa_minRange distance, check those OVER
 		next if $npc_ent->GetLevel() > $npc->GetLevel(); # Enemy level parameters...works
@@ -130,7 +138,7 @@ sub wa_KillMode
 		#quest::shout("I am coming for you, " . $npc_ent->GetCleanName() . "!");
 		quest::SetRunning(1);
 		$npc->AddToHateList($npc_ent, 1); #We now HATE HIM!...Will go through the list thats left and pick the npc at the bottom of the list to attack
-		#quest::debug("Killmode subscript end for " . $npc->GetName() . "");	
+		#plugin::Debug("Killmode subscript end for " . $npc->GetName() . "");	
 		last; #we found a valid target jump out of the loop
     }
 }
@@ -258,6 +266,7 @@ sub wa_NameGenerator
 sub wa_ChangeName
 {
 	my $npc = plugin::val('$npc');
+	#plugin::Debug("Changename begin");
 
 	$wa_TotalF = @wa_first; # count the TOTAL number of array elements.
 	$wa_TotalM = @wa_middle;
@@ -273,8 +282,8 @@ sub wa_ChangeName
 
 	$fullname = join ("","$wa_speak1","$wa_speak2","$wa_speak3");
 
-	#quest::debug("Total number of elements " . $wa_TotalF . "");
-	#quest::debug("Fullanme is " . $fullname . "");
+	#plugin::Debug("Total number of elements " . $wa_TotalF . "");
+	#plugin::Debug("Fullanme is " . $fullname . "");
 
 	$npc->TempName("$fullname");
 }
