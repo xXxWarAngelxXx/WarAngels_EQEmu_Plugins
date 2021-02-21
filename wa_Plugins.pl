@@ -42,18 +42,18 @@ sub wa_Decisions
 
 		last; # While we are in a state of no combat and below %20 health. Do not do other choices.
 	}
-	if ($wa_intChoice <= 8) #Below or at 8
+	if ($wa_intChoice <= 5) #Below or at 5
 	{
 		#plugin::Debug("Kill chosen.");
 		plugin::wa_KillMode();
 		#plugin::wa_KillMode(400, 1200);	#Change the ranges for customizing the npc_player min and max agro radius...keeping this to give example of what you can do with plugins.
-		#plugin::Debug("wa_intROLL BELOW 8 worked for ". $npc->GetName() .". Time to kill");
+		#plugin::Debug("wa_intROLL BELOW 5 worked for ". $npc->GetName() .". Time to kill");
 	}
-	if ($wa_intChoice > 8) #Above 8
+	if ($wa_intChoice > 5) #Above 5
 	{
 		#plugin::Debug("Chat chosen.");
 		plugin::wa_ChatMode();
-		#plugin::Debug("wa_intROLL ABOVE 8 worked for ". $npc->GetName() .". Time for peace");
+		#plugin::Debug("wa_intROLL ABOVE 5 worked for ". $npc->GetName() .". Time for peace");
 	}
 }
 
