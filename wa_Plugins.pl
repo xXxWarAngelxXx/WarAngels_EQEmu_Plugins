@@ -22,38 +22,33 @@
 #:: Future Plans:	
 #######################################################
 
-sub wa_Decisions
-{
+sub wa_Decisions {
 	#plugin::Debug("Decision start."); # The "D" in debug HAS to be UPPER CASE.
 	my $npc = plugin::val('$npc');
 	my $wa_intChoice = int(rand(100)); #Random number 0-99
 
-	$wa_maxhp = $npc->GetMaxHP();
-	$wa_HP = $npc->GetHP();
-	$wa_perchp = (($wa_HP / $wa_maxhp) * 100);
+	my $wa_maxhp = $npc->GetMaxHP();
+	my $wa_HP = $npc->GetHP();
+	my $wa_perchp = (($wa_HP / $wa_maxhp) * 100);
 
-	if($wa_perchp <= 20)
-	{
+	if($npc->IsEngaged != 1) { #Created since I failed in using the EVENT_HP.
+		if($wa_perchp <= 90) {
 		#plugin::Debug("Heal chosen.");
-		#plugin::Debug("" . $npc->GetName() . " I am below 20 percent, healing.");			
-		#plugin::Debug("Health check PERCENTAGE " . $wa_perchp . "");		
-		plugin::MobHealPercentage(5);
+		#plugin::Debug("Hit Points changed for ----" . $npc->GetName());
+		#plugin::Debug("Health check PERCENTAGE " . $wa_perchp . "for ----" . $npc->GetName());
+		plugin::SetAnim("sit"); #Options (stand/sit/duck/dead/kneel)
+		plugin::MobHealPercentage(5); #Heal 5% at a time to simulate slow healing of resting.
 		#plugin::Debug("" . $npc->GetName() . "Done healing.");
-
-		last; # While we are in a state of no combat and below %20 health. Do not do other choices.
-	}
-	if ($wa_intChoice <= 5) #Below or at 5
-	{
-		#plugin::Debug("Kill chosen.");
+		last; # While we are in a state of no combat and below %90 health. Do not do other choices.
+		}
+		if ($wa_intChoice <= $_[0] && $wa_perchp > 90) { #Below or at.
 		plugin::wa_KillMode();
-		#plugin::wa_KillMode(400, 1200);	#Change the ranges for customizing the npc_player min and max agro radius...keeping this to give example of what you can do with plugins.
-		#plugin::Debug("wa_intROLL BELOW 5 worked for ". $npc->GetName() .". Time to kill");
-	}
-	if ($wa_intChoice > 5) #Above 5
-	{
-		#plugin::Debug("Chat chosen.");
+		#plugin::Debug("wa_intROLL worked for ". $npc->GetName() .". Time to kill");
+		}
+		if ($wa_intChoice > $_[0] && $wa_perchp > 90) { #Above.
 		plugin::wa_ChatMode();
-		#plugin::Debug("wa_intROLL ABOVE 5 worked for ". $npc->GetName() .". Time for peace");
+		#plugin::Debug("wa_intROLL worked for ". $npc->GetName() .". Time for peace");
+		}
 	}
 }
 
@@ -68,8 +63,7 @@ sub wa_Decisions
 #:: Future Plans	
 ####################################
 
-sub wa_ChatMode
-{
+sub wa_ChatMode {
 	my $npc = plugin::val('$npc');
 	my $wa_intCHAT = int(rand(100)); #Random number 0-99
 
@@ -77,24 +71,21 @@ sub wa_ChatMode
 	#quest::emote("Does the whole zone hear me!!"); #Works but emote has a limited range
 	#plugin::RandomSay(chance(1-100), "Heyhey!!","How are you all doing?","How about it?");
 				
-	if ($wa_intCHAT <= 33) #Below or at 33
-	{
+	if ($wa_intCHAT <= 33) { #Below or at 33
 		plugin::SetAnim("sit"); #Options (stand/sit/duck/dead/kneel)		
 		#quest::shout2("worldwide only shout"); #Does not use...relies on the datbase name
 		#quest::we(14, "World emote");
-		#plugin::Debug("wa_intCHAT Sarcastic chat");
+		#plugin::Debug("wa_intCHAT sit");
 	}
-	if ($wa_intCHAT > 33 && $wa_intCHAT <= 66) #Above between 33 66
-	{
+	if ($wa_intCHAT > 33 && $wa_intCHAT <= 66) { #Above between 33 66
 		plugin::SetAnim("stand"); #Options (stand/sit/duck/dead/kneel)
-		#plugin::Debug("wa_intCHAT Positive chat");
+		#plugin::Debug("wa_intCHAT stand");
 	}
-	if ($wa_intCHAT > 66) #above 66
-	{
+	if ($wa_intCHAT > 66) { #above 66
 		plugin::DoAnim("dance");		
 		#quest::shout("Zone shout"); #Does not use...relies on the dataase name
 		#quest::ze(14, "Zone emote");
-		#plugin::Debug("wa_intCHAT idiot chat");
+		#plugin::Debug("wa_intCHAT dance");
 	}
 }
 
@@ -109,36 +100,29 @@ sub wa_ChatMode
 #:: Future Plans:			Work on waypoint integration.
 #################################################################
 
-sub wa_KillMode
-{
-	#plugin::Debug("Killmode begin for " . $npc->GetName() . ""); #This broke my script. Why?
+sub wa_KillMode {
 	my $npc = plugin::val('$npc'); #this was what I was missing. without this the plugin was not knowing who was calling
 	my $entity_list = plugin::val('$entity_list');
 	my $wa_minZone = $npc->GetEntityVariable("wa_minRange");
 	my $wa_maxZone = $npc->GetEntityVariable("wa_maxRange");
-	#my $wa_minZone = $_[0]; #pulled from first position in the plugin call...keeping this to give example of what you can do with plugins.
-	#my $wa_maxZone = $_[1]; #pulled from second position in the plugin call...keeping this to give example of what you can do with plugins.
 
-	$wa_disUpper = plugin::RandomRange($wa_minZone, $wa_maxZone);
-	@npc_list = $entity_list->GetNPCList();
-	#plugin::Debug("Killmode begin for " . $npc->GetName() . "");
+	my $wa_disUpper = plugin::RandomRange($wa_minZone, $wa_maxZone);
+	my @npc_list = $entity_list->GetNPCList();
 
-	foreach $npc_ent (@npc_list) 
-	{
-		#plugin::Debug("Killmode subscript begin for " . $npc->GetName() . ""); #This debug will repeat for each NPC in the GetNPCList()
-		next if $npc_ent->CalculateDistance($x, $y, $z) > $wa_disUpper; #skip mobs OVER $wa_disUpper distance, check those BELOW
-		next if $npc_ent->CalculateDistance($x, $y, $z) < $wa_minRange; #skip mobs BELOW $wa_minRange distance, check those OVER
+	foreach $npc_ent (@npc_list) {
+		next if $npc_ent->CalculateDistance($npc->GetX(), $npc->GetY(), $npc->GetZ()) > $wa_disUpper; #skip mobs OVER $wa_disUpper distance, check those BELOW
+		next if $npc_ent->CalculateDistance($npc->GetX(), $npc->GetY(), $npc->GetZ()) < $wa_minZone; #skip mobs BELOW $wa_minZone distance, check those OVER
 		next if $npc_ent->GetLevel() > $npc->GetLevel(); # Enemy level parameters...works
-		next if $npc_ent->IsEngaged(); # Is target in combat?...works
+		#next if $npc_ent->IsEngaged(); # Is target in combat?...works. Removes kill strealing, but players kill steal, so commented out.
 		next if $npc_ent->GetID() == $npc->GetID(); #Lets not kill ourself.
 		next if ($npc_ent->GetSpecialAbility(19) || $npc_ent->GetSpecialAbility(20) || $npc_ent->GetSpecialAbility(24) || $npc_ent->GetSpecialAbility(35)); #Immune to melee / magic / aggro / noharm SKIP.
 		next if $npc_ent->GetBodyType() == 11; #skip untargetable NPCs.
 		next if $npc_ent->GetOwnerID(); #skip pets.
 		next if $npc_ent->CheckNPCFactionAlly(faction_id) == $npc->CheckNPCFactionAlly(faction_id); #We are brothers and sisters in arms, lets not kill each other
-		#quest::shout("I am coming for you, " . $npc_ent->GetCleanName() . "!");
-		quest::SetRunning(1);
-		$npc->AddToHateList($npc_ent, 1); #We now HATE HIM!...Will go through the list thats left and pick the npc at the bottom of the list to attack
-		#plugin::Debug("Killmode subscript end for " . $npc->GetName() . "");	
+		quest::shout("I am coming for you, " . $npc_ent->GetCleanName() . "!");
+		$npc->AddToHateList($npc_ent, 1, 1); #We now HATE HIM!...Will go through the list thats left and pick the npc at the bottom of the list to attack
+		$npc->Attack($npc_ent);
+		#plugin::Debug("Killmode begin for --------" . $npc->GetName());
 		last; #we found a valid target jump out of the loop
     }
 }
@@ -163,8 +147,7 @@ sub wa_KillMode
 #::								128-Iksar,130-Vah Shir,330-Froglok,522-Drakkin
 #######################################################
 
-sub wa_NameGenerator
-{
+sub wa_NameGenerator {
 	my $npc = plugin::val('$npc');
 	my $npcRace = $npc->GetRace();
 	my $npcGender = $npc->GetGender();
@@ -174,7 +157,7 @@ sub wa_NameGenerator
         3 => [0,'','',''],
         4 => [1,'Leg Lar Loa Luw Mith Murn Menth Mic Com Haw Boul Ain Elm Ber Ash Vis Cea Uin Gilr Bes Sae Von Ker Cyv','a e i o u ol ea na hg thorn bert ma eur der dre hol es nnai shade rock ie cal euh ad ia ith lil ni nin ehn ra l is thi ae ar par el','a e i o u as ere cha nin tive ill live hall ood ey per hollow ach an gaire ker in mire win vale lar fer go ant low ras wing dis rone deach ann olive ar st is ee ae tha ath _ _ _ _ _ _'],
         5 => [0,'','',''],
-        6 => [1,'Br','tiz','zk _ _ _ _ _ _'],
+        6 => [1,'Leg Lar Loa Luw Mith Murn Menth Mic Com Haw Boul Ain Elm Ber Ash Vis Cea Uin Gilr Bes Sae Von Ker Cyv','a e i o u ol ea na hg thorn bert ma eur der dre hol es nnai shade rock ie cal euh ad ia ith lil ni nin ehn ra l is thi ae ar par el','a e i o u as ere cha nin tive ill live hall ood ey per hollow ach an gaire ker in mire win vale lar fer go ant low ras wing dis rone deach ann olive ar st is ee ae tha ath _ _ _ _ _ _'],
         7 => [1,'Mith Mar Murn Menth','ol ea el','as ere cha _ _ _ _ _ _'],
         8 => [0,'','',''],
         9 => [1,'Zul Gro Ug','ra th nok','jas ok nok _ _ _ _ _ _'],
@@ -192,7 +175,7 @@ sub wa_NameGenerator
         3 => [0,'','',''],
         4 => [1,'Loth Lir Fen Fil Fith Gw Cao Lleu Blo Cry Bry Fan Lin Eir Lama Ket Mai Fer','ea al ern ene im fa deu st nn ial owa euw an ilf ela lea lih aeth hes ar ath','a e i o u ish cha ira he nwy wedd ch rm yn ill et en inn la sh th ar as ah ti uil il _ _ _ _ _ _'],
         5 => [0,'','',''],
-        6 => [1,'Hel','in','ia _ _ _ _ _ _'],
+        6 => [1,'Loth Lir Fen Fil Fith Gw Cao Lleu Blo Cry Bry Fan Lin Eir Lama Ket Mai Fer','ea al ern ene im fa deu st nn ial owa euw an ilf ela lea lih aeth hes ar ath','a e i o u ish cha ira he nwy wedd ch rm yn ill et en inn la sh th ar as ah ti uil il _ _ _ _ _ _'],
         7 => [1,'Fen Fil Fith','an ea al','a ish sha _ _ _ _ _ _'],
         8 => [0,'','',''],
         9 => [1,'Xu Vu Eg','kun zem nar','di bi cha _ _ _ _ _ _'],
@@ -263,8 +246,7 @@ sub wa_NameGenerator
 #:: Future Plans:	
 #######################################################
 
-sub wa_ChangeName
-{
+sub wa_ChangeName {
 	my $npc = plugin::val('$npc');
 	#plugin::Debug("Changename begin");
 
@@ -299,8 +281,7 @@ sub wa_ChangeName
 #:: Future Plans:	
 ####################################
 
-sub wa_RandomGender
-{
+sub wa_RandomGender {
 	my $npc = plugin::val('$npc'); #Who called this plugin?
 	my $GenChance = int(rand(100)); #Random number 0-99
 	if ($GenChance >= 49)
