@@ -1,26 +1,23 @@
 ##############################################################################
 ##############################################################################
-#:: Usage:			Single compilation of plugins from WarAngel
-#:: Created:		10 May 2020
-#:: Version:		wa_200422_02
-#:: Author:			WarAngel
-#:: Description:	To provide and support WarAngel's scripts (quests, etc...)
+#:: Usage:						Single compilation of plugins from WarAngel
+#:: Created:					12 April 2020
+#:: Author:						WarAngel
+#:: Description:				To provide and support WarAngel's scripts (quests, etc...)
 ##############################################################################
 ##############################################################################
 
-
-
-######################################################
-#:: Usage:					plugin::wa_Decisions(); Decide whether to attack or do Non combat stuff.
-#:: Created:				12April2020
-#:: Version(ddmmyy):		wa_160221_01
-#:: Author:					WarAngel
-#:: Description:			To generate decisions for npcs.
-#:: With help from:			Dencelle
-#:: Plugins:				plugin::val('$npc');plugin::MobHealPercentage(5);plugin::wa_KillMode(400, 1200);
-#:: 						plugin::wa_ChatMode();
-#:: Future Plans:	
-#######################################################
+##############################################################################
+#:: Usage:						plugin::wa_Decisions(); Decide whether to attack or do non combat stuff.
+#:: Created:					12April2020
+#:: Version(wa_ddmmyy_##):		wa_210321_01
+#:: Author:						WarAngel
+#:: Description:				To generate decisions for npcs.
+#:: With help from:				Dencelle
+#:: Plugins:					plugin::val('$npc');plugin::MobHealPercentage(5);plugin::wa_KillMode(400, 1200);
+#:: 							plugin::wa_ChatMode();
+#:: Future Plans:				
+##############################################################################
 
 sub wa_Decisions {
 	#plugin::Debug("Decision start."); # The "D" in debug HAS to be UPPER CASE.
@@ -41,27 +38,27 @@ sub wa_Decisions {
 		#plugin::Debug("" . $npc->GetName() . "Done healing.");
 		last; # While we are in a state of no combat and below %90 health. Do not do other choices.
 		}
-		if ($wa_intChoice <= $_[0] && $wa_perchp > 90) { #Below or at.
+		if ($wa_intChoice <= 50 && $wa_perchp > 90) { #Below or at.
 		plugin::wa_KillMode();
 		#plugin::Debug("wa_intROLL worked for ". $npc->GetName() .". Time to kill");
 		}
-		if ($wa_intChoice > $_[0] && $wa_perchp > 90) { #Above.
+		if ($wa_intChoice > 50 && $wa_perchp > 90) { #Above.
 		plugin::wa_ChatMode();
 		#plugin::Debug("wa_intROLL worked for ". $npc->GetName() .". Time for peace");
 		}
 	}
 }
 
-####################################
-#:: Usage:			plugin::wa_ChatMode(); To perform random chats and anim.
-#:: Created:		12Apr202
-#:: Version:		wa_200419_01
-#:: Author:			WarAngel
-#:: Description:	To have a NPC chat spam and animations.
-#:: With help from:	TurmoilToad,Salvanna,Akkadius,Trust,Kinglykrab
-#:: Plugins:		plugin::val('$npc'); plugin::SetAnim("sit"); plugin::DoAnim("dance");
-#:: Future Plans	
-####################################
+##############################################################################
+#:: Usage:						plugin::wa_ChatMode(); To perform random chats and anim.
+#:: Created:					12Apr2020
+#:: Version(wa_ddmmyy_##):		wa_200420_01
+#:: Author:						WarAngel
+#:: Description:				To have a NPC chat spam and animations.
+#:: With help from:				TurmoilToad,Salvanna,Akkadius,Trust,Kinglykrab
+#:: Plugins:					plugin::val('$npc'); plugin::SetAnim("sit"); plugin::DoAnim("dance");
+#:: Future Plans:				
+##############################################################################
 
 sub wa_ChatMode {
 	my $npc = plugin::val('$npc');
@@ -73,7 +70,7 @@ sub wa_ChatMode {
 				
 	if ($wa_intCHAT <= 33) { #Below or at 33
 		plugin::SetAnim("sit"); #Options (stand/sit/duck/dead/kneel)		
-		#quest::shout2("worldwide only shout"); #Does not use...relies on the datbase name
+		#quest::shout2("worldwide only shout"); #Do not use...relies on the database name
 		#quest::we(14, "World emote");
 		#plugin::Debug("wa_intCHAT sit");
 	}
@@ -89,16 +86,16 @@ sub wa_ChatMode {
 	}
 }
 
-################################################################
-#:: Usage:					plugin::wa_KillMode([minRange], [maxRange]); Example... plugin::wa_KillRange(500, 1000);
-#:: Created:				12April2020
-#:: Version(ddmmyy):		wa_160221_01
-#:: Author:					Akkadius or Trevius, heavily modified by WarAngel
-#:: Description:			To have a NPC create the illusion of other real world players running around. Attacking Mobs in a area range.
-#:: With help from:			TurmoilToad,Salvanna,Akkadius,Trust,Kinglykrab
-#:: Plugins:				plugin::val('$npc');plugin::RandomRange(0, 100);
-#:: Future Plans:			Work on waypoint integration.
-#################################################################
+##############################################################################
+#:: Usage:						plugin::wa_KillMode([minRange], [maxRange]); Example... plugin::wa_KillRange(500, 1000);
+#:: Created:					12April2020
+#:: Version(wa_ddmmyy_##):		wa_210321_01
+#:: Author:						Akkadius or Trevius, heavily modified by WarAngel
+#:: Description:				To have a NPC create the illusion of other real world players running around. Attacking Mobs in a area range.
+#:: With help from:				TurmoilToad,Salvanna,Akkadius,Trust,Kinglykrab
+#:: Plugins:					plugin::val('$npc');plugin::RandomRange(0, 100);
+#:: Future Plans:				Work on waypoint integration.
+##############################################################################
 
 sub wa_KillMode {
 	my $npc = plugin::val('$npc'); #this was what I was missing. without this the plugin was not knowing who was calling
@@ -127,25 +124,25 @@ sub wa_KillMode {
     }
 }
 
-######################################################
-#:: Usage:			plugin::wa_NameGenerator();
-#:: Created:		19April2020
-#:: Version:		wa_200422_01
-#:: Author:			Dencelle, made for WarAngel
-#:: Description:	To generate a random elements of names for npcs.
-#:: With help from:	
-#:: Plugins:		plugin::val('$npc');plugin::wa_ChangeName();
-#:: Future Plans:	Fill in my own name elements.
-#:: Instructions:	Below you will see where there are pieces of names (syllables). Dependiing on gender and race_ID insert your own name elements.
-#::					For example...
-#::					..."Legolas"...break it down to "Leg ol as". Now below you will see many codes such as...
-#::					...(4 => [1,'Mith Mar Murn Menth Mic','ol ea el','as ere as cha'],). In that code, in the [] there are three "areas" called arrays.
-#::					Divided by the "," with elements inside (Mith Mar Murn...) In this case you have the first array with
-#::					the first syllable of a name... "Mith". The second array with a second syllable of "ol". And the third with "as" for a name of Mitholas. 
-#::					Now breaking a name down gives a random generated name in game! Again could have Mitholas or Mithelere or Murneacha...
-#::					Race list...1-Human,2-Barbarian,3-Erudite,4-Wood Elf,5-High Elf,6-Dark Elf,7-Half Elf,8-Dwarf,9-Troll,10-Ogre,11-Halfling,12-Gnome
+##############################################################################
+#:: Usage:						plugin::wa_NameGenerator();
+#:: Created:					19April2020
+#:: Version(wa_ddmmyy_##):		wa_210321_01
+#:: Author:						Dencelle, made for WarAngel
+#:: Description:				To generate a random elements of names for npcs.
+#:: With help from:				
+#:: Plugins:					plugin::val('$npc');plugin::wa_ChangeName();
+#:: Future Plans:				Fill in my own name elements.
+#:: Instructions:				Below you will see where there are pieces of names (syllables). Dependiing on gender and race_ID insert your own name elements.
+#::								For example...
+#::								..."Legolas"...break it down to "Leg ol as". Now below you will see many codes such as...
+#::								...(4 => [1,'Mith Mar Murn Menth Mic','ol ea el','as ere as cha'],). In that code, in the [] there are three "areas" called arrays.
+#::								Divided by the "," with elements inside (Mith Mar Murn...) In this case you have the first array with
+#::								the first syllable of a name... "Mith". The second array with a second syllable of "ol". And the third with "as" for a name of Mitholas. 
+#::								Now breaking a name down gives a random generated name in game! Again could have Mitholas or Mithelere or Murneacha...
+#::								Race list...1-Human,2-Barbarian,3-Erudite,4-Wood Elf,5-High Elf,6-Dark Elf,7-Half Elf,8-Dwarf,9-Troll,10-Ogre,11-Halfling,12-Gnome
 #::								128-Iksar,130-Vah Shir,330-Froglok,522-Drakkin
-#######################################################
+##############################################################################
 
 sub wa_NameGenerator {
 	my $npc = plugin::val('$npc');
@@ -235,20 +232,19 @@ sub wa_NameGenerator {
 	}
 }
 
-######################################################
-#:: Usage:			plugin::wa_ChangeName(); Changes the name of the npc of the input elements from plugin::wa_NameGenerator():
-#:: Created:		16April2020
-#:: Version:		wa_200419_01
-#:: Author:			WarAngel
-#:: Description:	Takes information and spits out a random name for npc
-#:: With help from:	Dencelle
-#:: Plugins:		plugin::val('$npc');plugin::RandomRange(0,100);
-#:: Future Plans:	
-#######################################################
+##############################################################################
+#:: Usage:						plugin::wa_ChangeName(); Changes the name of the npc of the input elements from plugin::wa_NameGenerator():
+#:: Created:					16April2020
+#:: Version(wa_ddmmyy_##):		wa_200420_01
+#:: Author:						WarAngel
+#:: Description:				Takes information and spits out a random name for npc
+#:: With help from:				Dencelle
+#:: Plugins:					plugin::val('$npc');plugin::RandomRange(0,100);
+#:: Future Plans:				
+##############################################################################
 
 sub wa_ChangeName {
 	my $npc = plugin::val('$npc');
-	#plugin::Debug("Changename begin");
 
 	$wa_TotalF = @wa_first; # count the TOTAL number of array elements.
 	$wa_TotalM = @wa_middle;
@@ -262,24 +258,24 @@ sub wa_ChangeName {
 	$wa_speak2 = ("$wa_middle[$wa_ran2]");
 	$wa_speak3 = ("$wa_last[$wa_ran3]");
 
-	$fullname = join ("","$wa_speak1","$wa_speak2","$wa_speak3");
+	$wa_fullname = join ("","$wa_speak1","$wa_speak2","$wa_speak3");
 
 	#plugin::Debug("Total number of elements " . $wa_TotalF . "");
 	#plugin::Debug("Fullanme is " . $fullname . "");
 
-	$npc->TempName("$fullname");
+	$npc->TempName("$wa_fullname");
 }
 
-####################################
-#:: Usage:			plugin::wa_RandomGender(). Be sure to ****place this BEFORE any other scripts that call on gender information.****
-#:: Created:		22April2020
-#:: Version:		wa_200422_02
-#:: Author:			WarAngel... inspired by Trevius
-#:: Description:	To generate genders randomly
-#:: With help from:	My first successful solo script!
-#:: Plugins:		$npc = plugin::val('$npc');
-#:: Future Plans:	
-####################################
+##############################################################################
+#:: Usage:						plugin::wa_RandomGender(). Be sure to ****place this BEFORE any other scripts that call on gender information.****
+#:: Created:					22April2020
+#:: Version(wa_ddmmyy_##):		wa_200421_02
+#:: Author:						WarAngel... inspired by Trevius
+#:: Description:				To generate genders randomly
+#:: With help from:				My first successful solo script!
+#:: Plugins:					$npc = plugin::val('$npc');
+#:: Future Plans:				
+##############################################################################
 
 sub wa_RandomGender {
 	my $npc = plugin::val('$npc'); #Who called this plugin?
