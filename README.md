@@ -1,4 +1,4 @@
-# EQEmu-Plugins_Final
+# EQEmu-Plugins
 ## WarAngel's plugin scripts created for his EQEmu
 >
 ###  Plugin.pl
@@ -19,4 +19,6 @@ sub scripts inside the plugin is listed below with description and instructions 
     > Changes the NPCs name after recieving it from the wa_NameGenerator.
 * wa_RandomGender (coming soon)
     > Just as it says 50/50 chance of being a guy or a girl.
+    > 
+More to come...
 
