@@ -8,7 +8,7 @@ sub scripts inside the plugin is listed below with description and instructions 
 * wa_Decisions
     > Narrative soon...
 * wa_ChatMode
-    > Still just an idea. But coming.
+    > Narrative soon...
 * wa_KillMode
     > You can input a minimum and a maximum distance for the kill "area".
 * wa_NameGenerator
