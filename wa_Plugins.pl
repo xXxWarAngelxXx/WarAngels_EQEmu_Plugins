@@ -116,7 +116,7 @@ sub wa_KillMode {
 		next if $npc_ent->GetBodyType() == 11; #skip untargetable NPCs.
 		next if $npc_ent->GetOwnerID(); #skip pets.
 		next if $npc_ent->CheckNPCFactionAlly(faction_id) == $npc->CheckNPCFactionAlly(faction_id); #We are brothers and sisters in arms, lets not kill each other
-		quest::shout("I am coming for you, " . $npc_ent->GetCleanName() . "!");
+		#quest::shout("I am coming for you, " . $npc_ent->GetCleanName() . "!");
 		$npc->AddToHateList($npc_ent, 1, 1); #We now HATE HIM!...Will go through the list thats left and pick the npc at the bottom of the list to attack
 		$npc->Attack($npc_ent);
 		#plugin::Debug("Killmode begin for --------" . $npc->GetName());
