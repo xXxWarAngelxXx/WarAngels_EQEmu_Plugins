@@ -1,14 +1,14 @@
-# EQEmu-Plugins_Final
+# EQEmu-Plugins
 ## WarAngel's plugin scripts created for his EQEmu
 >
-###  Plugin.pl
+###  wa_Plugin.pl
 > With this .pl you just drop it in your .../directory/plugins...
 sub scripts inside the plugin is listed below with description and instructions if needed.
 
 * wa_Decisions
     > Narrative soon...
 * wa_ChatMode
-    > Still just an idea. But coming.
+    > Narrative soon...
 * wa_KillMode
     > You can input a minimum and a maximum distance for the kill "area".
 * wa_NameGenerator
@@ -19,4 +19,6 @@ sub scripts inside the plugin is listed below with description and instructions 
     > Changes the NPCs name after recieving it from the wa_NameGenerator.
 * wa_RandomGender (coming soon)
     > Just as it says 50/50 chance of being a guy or a girl.
+    > 
+More to come...
 
